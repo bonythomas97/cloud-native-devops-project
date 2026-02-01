@@ -1,98 +1,138 @@
-# Cloud-Native DevOps Project on Azure
+🚀 Cloud-Native DevOps CI/CD Pipeline on Azure
+📌 Project Overview
 
-## 📌 Project Overview
-This project demonstrates a real-world DevOps implementation for a cloud-native Node.js application using modern DevOps tools and practices.
+This project demonstrates an end-to-end DevOps implementation for deploying a containerized Node.js application on Microsoft Azure using a fully automated CI/CD pipeline.
 
-The application is built, version-controlled, containerized, and deployed using a CI/CD pipeline on Microsoft Azure.
+The solution includes source control integration, containerization, private image registry, Kubernetes orchestration, and external exposure using Azure Load Balancer.
 
----
+🏗️ Architecture Overview
+Developer → GitHub → Jenkins → Docker → Azure Container Registry → AKS → Azure Load Balancer → End User
 
-## 🚀 Application Details
-- Technology: Node.js (Express)
-- Endpoints:
-  - `/` – Application homepage
-  - `/health` – Health check endpoint for monitoring and orchestration
+🔄 Workflow Explanation
 
----
+Developer pushes code to GitHub.
+GitHub webhook triggers Jenkins pipeline automatically.
 
-## 🛠️ DevOps Tools & Technologies
-- Cloud: Microsoft Azure
-- OS: Ubuntu Linux (Azure VM)
-- Version Control: Git & GitHub
-- CI/CD: Jenkins (Planned)
-- Containerization: Docker (Planned)
-- Orchestration: Kubernetes / AKS (Planned)
-- Container Registry: Azure Container Registry (Planned)
-- Monitoring: Azure Monitor / Prometheus (Planned)
+Jenkins:
 
----
+Pulls latest code
+Builds Docker image
+Tags image with build number
+Pushes image to Azure Container Registry (ACR)
+AKS pulls the latest image securely using Managed Identity.
+Kubernetes Deployment creates pods.
+Service of type LoadBalancer provisions Azure Public IP.
+Application becomes accessible via browser.
 
-## 🏗️ Architecture (Planned)
+🚀 Application Details
 
-Developer
-|
-| git push
-v
-GitHub
-|
-| CI/CD Pipeline
-v
-Jenkins
-|
-| Build & Test
-v
-Docker
-|
-| Push Image
-v
-Azure Container Registry
-|
-| Deploy
-v
-Azure Kubernetes Service (AKS)
-|
-v
-Public Web Application01~Developer
-|
-| git push
-v
-GitHub
-|
-| CI/CD Pipeline
-v
-Jenkins
-|
-| Build & Test
-v
-Docker
-|
-| Push Image
-v
-Azure Container Registry
-|
-| Deploy
-v
-Azure Kubernetes Service (AKS)
-|
-v
-Public Web Application
+Technology: Node.js (Express)
+
+Endpoints:
+/ – Application homepage
+/health – Health check endpoint
+
+Application is containerized and deployed on Azure Kubernetes Service (AKS).
+
+🛠️ Technologies Used
+
+Cloud: Microsoft Azure
+OS: Ubuntu Linux (Azure VM for Jenkins)
+Version Control: Git & GitHub
+CI/CD: Jenkins (Self-Managed)
+Containerization: Docker
+Container Registry: Azure Container Registry (ACR)
+Orchestration: Azure Kubernetes Service (AKS)
+Networking: Azure Load Balancer
+CLI Tools: kubectl, Azure CLI
+
+📂 Project Structure
+nodejs-app/
+│── app.js
+│── package.json
+│── Dockerfile
+│── Jenkinsfile
+│── deployment.yaml
+│── service.yaml
+│── README.md
+
+🐳 Docker Implementation
+
+The application is containerized using:
+
+FROM node:18
+WORKDIR /app
+COPY . .
+RUN npm install
+CMD ["node", "app.js"]
 
 
----
+This ensures portability and consistent runtime environment across deployments.
 
-## 🎯 Objective
-- Implement end-to-end CI/CD pipeline
-- Follow production-grade DevOps practices
-- Gain hands-on experience with cloud-native deployments
+⚙️ CI/CD Pipeline (Jenkins)
 
----
+Pipeline stages:
+Clone Repository
+Build Docker Image
+Tag Image with Build Number
+Push Image to ACR
+Deploy Updated Image to AKS
+Deployment is automated upon every code push.
 
-## 📌 Current Status
-✅ Phase 1 Completed – Application setup and GitHub version control  
-⏳ Phase 2 In Progress – CI/CD pipeline using Jenkins
+☸ Kubernetes Deployment
 
----
+Deployment manages pod lifecycle and replicas.
+Service type: LoadBalancer
+Azure automatically provisions:
+Public IP
+Azure Load Balancer
+Backend configuration
+Rolling updates ensure zero-downtime deployment.
 
-## 👤 Author
-**Bony Thomas**  
-Cloud / DevOps Engineer (Aspiring)
+
+🔐 Security Implementation
+
+ACR integrated with AKS using Managed Identity.
+No credentials stored inside Kubernetes manifests.
+Private image registry for secure container storage.
+
+
+🌍 Application Access
+
+After deployment, the application is accessible via:
+
+http://<Public-IP>
+
+
+🧠 Key DevOps Concepts Demonstrated
+
+End-to-End CI/CD Automation
+Containerization Best Practices
+Kubernetes Orchestration
+ImagePullBackOff Troubleshooting
+502 Debugging via Ingress/Service
+Managed Identity Integration
+Rolling Updates
+
+
+📸 Screenshots (Add These)
+
+Jenkins Successful Pipeline
+Docker Image in ACR
+kubectl get pods
+kubectl get svc
+Application Running in Browser
+
+
+🎯 Future Enhancements
+
+Helm Chart Implementation
+GitOps with ArgoCD
+Prometheus & Grafana Monitoring
+Horizontal Pod Autoscaling
+
+👨‍💻 Author
+
+Bony Thomas
+Cloud / DevOps Engineer
+Open to DevOps & Cloud Opportunities
