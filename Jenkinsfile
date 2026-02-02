@@ -48,11 +48,13 @@ pipeline {
         }
 
         stage('Deploy to AKS') {
-            steps {
-                sh '''
-                kubectl set image deployment/nodejs-deployment \
-                nodejs-container=$ACR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG
-                '''
+    steps {
+        sh '''
+        export KUBECONFIG=/root/.kube/config
+        kubectl get nodes
+        kubectl set image deployment/nodejs-deployment \
+        nodejs-container=$ACR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG
+        '''
             }
         }
     }
