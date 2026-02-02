@@ -8,7 +8,7 @@ pipeline {
     environment {
         ACR_REGISTRY = "bonydevopsacr.azurecr.io"
         IMAGE_NAME = "nodejs-devops-app"
-        IMAGE_TAG = "1.0"
+        IMAGE_TAG = "${BUILD_NUMBER}"
     }
 
     stages {
@@ -46,11 +46,20 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to AKS') {
+            steps {
+                sh '''
+                kubectl set image deployment/nodejs-deployment \
+                nodejs-container=$ACR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG
+                '''
+            }
+        }
     }
 
     post {
         success {
-            echo '✅ Docker image built and pushed successfully!'
+            echo '✅ Build, Push & Deploy Successful!'
         }
         failure {
             echo '❌ Pipeline failed'
