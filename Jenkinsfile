@@ -26,10 +26,10 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            steps {
-                sh '''
-                docker build -t $ACR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG .
-                '''
+    steps {
+        sh '''
+        docker build --platform linux/amd64 -t $ACR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG .
+        '''
             }
         }
 
